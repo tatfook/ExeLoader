@@ -6,7 +6,14 @@
 #include "IParaEngineApp.h"
 #include "Exporter3mf.h"
 using namespace ParaEngine;
-
+namespace NPL
+{
+	class CNPLRuntime {
+	public:
+		static CNPLRuntime* GetInstance();
+		INPLRuntimeState* GetState(const char* name = NULL);
+	};
+}
 #pragma region PE_DLL 
 
 #ifdef WIN32
@@ -160,13 +167,14 @@ CORE_EXPORT_DECL void LibActivate(int nType, void* pVoid)
 
 		NPLInterface::NPLObjectProxy tabMsg = NPLInterface::NPLHelper::MsgStringToNPLTable(sMsg);
 		NPLInterface::NPLObjectProxy renderList = tabMsg["renderList"];
-
+		std::string filename = tabMsg["filename"];
 		Exporter3mf exporter_3mf;
 		OUTPUT_LOG("Export 3mf check\n");
 		if (exporter_3mf.check())
 		{
 			OUTPUT_LOG("Export 3mf started\n");
-			exporter_3mf.parse(renderList);
+			exporter_3mf.save(renderList, filename);
+			//NPL::INPLRuntimeState* state = NPL::CNPLRuntime::GetInstance()->GetState();
 		}
 		OUTPUT_LOG("Export 3mf finished\n");
 	}

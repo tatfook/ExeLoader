@@ -12,12 +12,13 @@ public:
 	Exporter3mf();
 	~Exporter3mf();
 	bool check();
-	void parse(NPLInterface::NPLObjectProxy renderList);
+	int save(NPLInterface::NPLObjectProxy& renderList, std::string filename);
 private:
 	MODELMESHVERTEX fnCreateVertex(float x, float y, float z);
 	MODELMESHTRIANGLE fnCreateTriangle(int v0, int v1, int v2);
 	MODELMESHCOLOR_SRGB fnCreateColor(unsigned char red, unsigned char green, unsigned char blue);
 	MODELTRANSFORM createTranslationMatrix(float x, float y, float z);
 
-	int createModel(std::vector<MODELMESHVERTEX>& vertices, std::vector<MODELMESHTRIANGLE>& triangles, std::vector<MODELMESH_TRIANGLECOLOR_SRGB>& colors);
+	void read(NPLInterface::NPLObjectProxy& renderList, std::vector<MODELMESHVERTEX>& vertices, std::vector<MODELMESHTRIANGLE>& triangles, std::vector<MODELMESH_TRIANGLECOLOR_SRGB>& colors);
+	int createMesh(PLib3MFModel * model, std::vector<MODELMESHVERTEX>& vertices, std::vector<MODELMESHTRIANGLE>& triangles, std::vector<MODELMESH_TRIANGLECOLOR_SRGB>& colors);
 };
