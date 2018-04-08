@@ -8,3 +8,4 @@ Debug
 *.log
 .vscode
 bin
+bin64
