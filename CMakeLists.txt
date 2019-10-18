@@ -2,7 +2,7 @@
 # Date: 2019.10.18
 
 cmake_minimum_required(VERSION 2.6)
-project (Exporter3mf)
+project (ExeLoader)
 
 set (BoostRoot_DIR "$ENV{BOOST_ROOT}")
 set(NPLRuntime_DIR "../NPLRuntime" CACHE STRING "")
@@ -12,10 +12,10 @@ set( OUTPUT_BIN_DIR "${PROJECT_SOURCE_DIR}/target/" )
 
 
 
-SET(Exporter3mf_Source_files "")
+SET(ExeLoader_Source_files "")
 file (GLOB src_files ${PROJECT_SOURCE_DIR}/src/*.*)
 SOURCE_GROUP("src" FILES ${src_files}) 
-list(APPEND Exporter3mf_Source_files ${src_files})
+list(APPEND ExeLoader_Source_files ${src_files})
 
 
 
@@ -30,6 +30,7 @@ include_directories("${NPLRuntime_Absolutely_DIR}/Client/trunk/ParaEngineClient/
 include_directories("${NPLRuntime_Absolutely_DIR}/Client/trunk/ParaEngineClient/IO")
 
 include_directories("${BoostRoot_DIR}")
+
 
 IF(MSVC)
 	# statically link MSVC to reduce dependancies
@@ -51,16 +52,17 @@ IF(MSVC)
 ENDIF()
 
 
+
 SET(CMAKE_DEBUG_POSTFIX "_d")
 
  
 
-add_library(Exporter3mf SHARED ${Exporter3mf_Source_files})
+add_library(ExeLoader SHARED ${ExeLoader_Source_files})
 
 
 ADD_CUSTOM_COMMAND(
-   TARGET Exporter3mf
+   TARGET ExeLoader
    POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_BIN_DIR}
-   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:Exporter3mf> ${OUTPUT_BIN_DIR}
+   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ExeLoader> ${OUTPUT_BIN_DIR}
 )

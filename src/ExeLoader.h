@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+
 #include "INPLRuntime.h"
 #include "INPLRuntimeState.h"
 #include "IParaEngineCore.h"
@@ -7,9 +8,9 @@
 
 using namespace ParaEngine;
 
-class Exporter3mf {
+class ExeLoader {
 public:
-	Exporter3mf();
-	~Exporter3mf();
+	ExeLoader();
+	~ExeLoader();
 private:
 };

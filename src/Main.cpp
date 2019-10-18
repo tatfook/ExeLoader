@@ -4,7 +4,9 @@
 #include "INPLRuntimeState.h"
 #include "IParaEngineCore.h"
 #include "IParaEngineApp.h"
-#include "Exporter3mf.h"
+
+#include "ExeLoader.h"
+
 using namespace ParaEngine;
 
 #pragma region PE_DLL 
@@ -34,17 +36,17 @@ HINSTANCE Instance = NULL;
 
 
 
-ClassDescriptor* Exporter3mf_GetClassDesc();
+ClassDescriptor* ExeLoader_GetClassDesc();
 typedef ClassDescriptor* (*GetClassDescMethod)();
 
 GetClassDescMethod Plugins[] =
 {
-	Exporter3mf_GetClassDesc,
+	ExeLoader_GetClassDesc,
 };
 
-#define Exporter3mf_CLASS_ID Class_ID(0x3b305a31, 0x47a409ce)
+#define ExeLoader_CLASS_ID Class_ID(0x3b305a31, 0x47a409ce)
 
-class Exporter3mfDesc :public ClassDescriptor
+class ExeLoaderDesc :public ClassDescriptor
 {
 public:
 
@@ -54,7 +56,7 @@ public:
 	}
 	const char* ClassName()
 	{
-		return "IExporter3mf";
+		return "IExeLoader";
 	}
 
 	SClass_ID SuperClassID()
@@ -64,17 +66,17 @@ public:
 
 	Class_ID ClassID()
 	{
-		return Exporter3mf_CLASS_ID;
+		return ExeLoader_CLASS_ID;
 	}
 
 	const char* Category()
 	{
-		return "Exporter3mf Category";
+		return "ExeLoader Category";
 	}
 
 	const char* InternalName()
 	{
-		return "Exporter3mf InternalName";
+		return "ExeLoader InternalName";
 	}
 
 	HINSTANCE HInstance()
@@ -84,15 +86,15 @@ public:
 	}
 };
 
-ClassDescriptor* Exporter3mf_GetClassDesc()
+ClassDescriptor* ExeLoader_GetClassDesc()
 {
-	static Exporter3mfDesc s_desc;
+	static ExeLoaderDesc s_desc;
 	return &s_desc;
 }
 
 CORE_EXPORT_DECL const char* LibDescription()
 {
-	return "ParaEngine Exporter3mf Ver 1.0.0";
+	return "ParaEngine ExeLoader Ver 1.0.0";
 }
 
 CORE_EXPORT_DECL unsigned long LibVersion()
@@ -162,7 +164,7 @@ CORE_EXPORT_DECL void LibActivate(int nType, void* pVoid)
 		NPLInterface::NPLObjectProxy renderList = tabMsg["renderList"];
 		std::string filename = tabMsg["filename"];
 		std::string callback = tabMsg["callback"];
-		Exporter3mf exporter_3mf;
+		ExeLoader exporter_3mf;
 
 
 	}
