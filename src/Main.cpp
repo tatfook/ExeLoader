@@ -163,19 +163,8 @@ CORE_EXPORT_DECL void LibActivate(int nType, void* pVoid)
 		std::string filename = tabMsg["filename"];
 		std::string callback = tabMsg["callback"];
 		Exporter3mf exporter_3mf;
-		OUTPUT_LOG("Export 3mf check\n");
-		if (exporter_3mf.check())
-		{
-			OUTPUT_LOG("Export 3mf started\n");
-			exporter_3mf.save(renderList, filename);
-			OUTPUT_LOG("callback:%s\n", callback.c_str());
-			if (!callback.empty())
-			{
-				std::string codes = "msg = { finished_3mf = true }";
-				pState->activate(callback.c_str(), codes.c_str(),codes.length());
-			}
-		}
-		OUTPUT_LOG("Export 3mf finished\n");
+
+
 	}
 }
 

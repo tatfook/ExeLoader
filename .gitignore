@@ -9,3 +9,4 @@ Debug
 .vscode
 bin
 bin64
+build/
