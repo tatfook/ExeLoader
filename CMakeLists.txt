@@ -8,10 +8,7 @@ set (BoostRoot_DIR "$ENV{BOOST_ROOT}")
 set(NPLRuntime_DIR "../NPLRuntime" CACHE STRING "")
 set (NPLRuntime_Absolutely_DIR "${PROJECT_SOURCE_DIR}/${NPLRuntime_DIR}")
 
-# set( OUTPUT_BIN_DIR "${PROJECT_SOURCE_DIR}/target/" )
-
-# for debug
-set( OUTPUT_BIN_DIR "C:/msys64/home/favor/project/ParaCraftSDK/redist/plugins/" )
+set( OUTPUT_BIN_DIR "${PROJECT_SOURCE_DIR}/target/" )
 
 
 
