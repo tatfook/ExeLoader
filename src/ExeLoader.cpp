@@ -14,7 +14,7 @@ ExeLoader::~ExeLoader()
 
 }
 
-const std::string ExeLoader::ExecuteFilter(const std::string& lpExeName, const std::string& data, int * runtime_error, int * exit_code)
+const std::string ExeLoader::Execute(const std::string& exe_path, const std::string& input, int* runtime_error, int* exit_code)
 {
 	std::string nil = "";
 	*runtime_error = 0;
@@ -80,7 +80,7 @@ const std::string ExeLoader::ExecuteFilter(const std::string& lpExeName, const s
 
 	// Create the child process.
 	bSuccess = ::CreateProcess(NULL,
-		(LPSTR)lpExeName.c_str(),    // command line
+		(LPSTR)exe_path.c_str(),    // command line
 		NULL,         // process security attributes
 		NULL,         // primary thread security attributes
 		TRUE,         // handles are inherited
@@ -93,16 +93,16 @@ const std::string ExeLoader::ExecuteFilter(const std::string& lpExeName, const s
 	// If an error occurs, exit the application.
 	if (!bSuccess) {
 		dwErrorCode = GetLastError();
-		OUTPUT_LOG("error: failed running cmdline: %s, error code(%d).\n", lpExeName.c_str(), dwErrorCode);
+		OUTPUT_LOG("error: failed running cmdline: %s, error code(%d).\n", exe_path.c_str(), dwErrorCode);
 		*runtime_error = 1;
 		return nil;
 	}
 
 	/* Write data to child process */
-	DWORD dwRead = data.length();
+	DWORD dwRead = input.length();
 	DWORD dwWritten;
 
-	bSuccess = WriteFile(g_hChildStd_IN_Wr, data.c_str(), dwRead, &dwWritten, NULL);
+	bSuccess = WriteFile(g_hChildStd_IN_Wr, input.c_str(), dwRead, &dwWritten, NULL);
 	if (!bSuccess) {
 		OUTPUT_LOG("error: write to child process stdin failed\n");
 		*runtime_error = 1;

@@ -168,29 +168,19 @@ CORE_EXPORT_DECL void LibActivate(int nType, void* pVoid)
 
 		int runtime_error;
 		int exit_code;
-		std::string output = loader.ExecuteFilter(exe_path, input, &runtime_error, &exit_code);
+		std::string output = loader.Execute(exe_path, input, &runtime_error, &exit_code);
 
 		NPLInterface::NPLObjectProxy resMsg;
 		resMsg["runtime_error"] = false;
-		resMsg["exe_error"] = false;
+		resMsg["exit_code"] = (double)0;
 		resMsg["output"] = "";
 		
-		// error happens
 		if (runtime_error != 0) {
 			resMsg["runtime_error"] = true;
 		}
 		else {
-			// exe error in running
-			if (exit_code != 0) {
-				resMsg["exe_error"] = true;
-			}
-			// exe running normally
-			else {
-				resMsg["exe_error"] = false;
-			}
-
+			resMsg["exit_code"] = (double)exit_code;
 			resMsg["output"] = output.c_str();
-
 		}
 
 		std::string resMsgStr;

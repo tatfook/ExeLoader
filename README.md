@@ -23,20 +23,24 @@ NPL.activate("plugins/ExeLoader.dll", {
 
 返回的 msg 有 3 个属性，
 - runtime_error，bool 值，在底层通过 C++ 调用 exe_file 的时候有没有出现错误
-- exe_error，bool 值，可执行文件是否正常退出，通过退出码是否为 0 来判断
+- exit_code，int 值，可执行文件的退出码
 - output，string 值，可执行文件的标准输出内容
 
 ```lua
 local function activate()
     if msg then
         local runtime_error = msg["runtime_error"]
-        local exe_error = msg["exe_error"]
+        local exit_code = msg["exit_code"]
         local output = msg["output"]
 
         if runtime_error then
+			print("runtime error happened")
         else
-            if exe_error then
+            if exit_code != 0 then
+				print("something wrong in exe running")
             else
+				print("got exe stdout content:")
+				print(output)
             end
         end
     end
