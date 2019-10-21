@@ -34,13 +34,13 @@ local function activate()
         local output = msg["output"]
 
         if runtime_error then
-			print("runtime error happened")
+            print("runtime error happened")
         else
             if exit_code != 0 then
-				print("something wrong in exe running")
+                print("something wrong in exe running")
             else
-				print("got exe stdout content:")
-				print(output)
+                print("got exe stdout content:")
+                print(output)
             end
         end
     end
