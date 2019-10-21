@@ -44,13 +44,13 @@ GetClassDescMethod Plugins[] =
 	ExeLoader_GetClassDesc,
 };
 
-#define ExeLoader_CLASS_ID Class_ID(0x3b305a31, 0x47a409ce)
+#define ExeLoader_CLASS_ID Class_ID(0x3b305bd1, 0x47a7a9ce)
 
-class ExeLoaderDesc :public ClassDescriptor
+class ExeLoaderDesc : public ClassDescriptor
 {
 public:
 
-	void *	Create(bool loading)
+	void* Create(bool loading)
 	{
 		return NULL;
 	}
@@ -158,15 +158,49 @@ CORE_EXPORT_DECL void LibActivate(int nType, void* pVoid)
 	{
 		NPL::INPLRuntimeState* pState = (NPL::INPLRuntimeState*)pVoid;
 		const char* sMsg = pState->GetCurrentMsg();
-		int nMsgLength = pState->GetCurrentMsgLength();
 
 		NPLInterface::NPLObjectProxy tabMsg = NPLInterface::NPLHelper::MsgStringToNPLTable(sMsg);
-		NPLInterface::NPLObjectProxy renderList = tabMsg["renderList"];
-		std::string filename = tabMsg["filename"];
+		std::string exe_path = tabMsg["exe_path"];
+		std::string input = tabMsg["input"];
 		std::string callback = tabMsg["callback"];
-		ExeLoader exporter_3mf;
 
+		ExeLoader loader;
 
+		int runtime_error;
+		int exit_code;
+		std::string output = loader.ExecuteFilter(exe_path, input, &runtime_error, &exit_code);
+
+		NPLInterface::NPLObjectProxy resMsg;
+		resMsg["runtime_error"] = false;
+		resMsg["exe_error"] = false;
+		resMsg["output"] = "";
+		
+		// error happens
+		if (runtime_error != 0) {
+			resMsg["runtime_error"] = true;
+		}
+		else {
+			// exe error in running
+			if (exit_code != 0) {
+				resMsg["exe_error"] = true;
+			}
+			// exe running normally
+			else {
+				resMsg["exe_error"] = false;
+			}
+
+			resMsg["output"] = output.c_str();
+
+		}
+
+		std::string resMsgStr;
+		NPLInterface::NPLHelper::NPLTableToString(NULL, resMsg, resMsgStr);
+
+		resMsgStr = std::string("msg = ") + resMsgStr;
+
+		if (!callback.empty()) {
+			pState->activate(callback.c_str(), resMsgStr.c_str(), resMsgStr.length());
+		}
 	}
 }
 
