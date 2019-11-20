@@ -189,7 +189,9 @@ CORE_EXPORT_DECL void LibActivate(int nType, void* pVoid)
 		resMsgStr = std::string("msg = ") + resMsgStr;
 
 		if (!callback.empty()) {
-			pState->activate(callback.c_str(), resMsgStr.c_str(), resMsgStr.length());
+			// sync method `call` instead of async `activate`
+			pState->call(callback.c_str(), resMsgStr.c_str(), resMsgStr.length());
+
 		}
 	}
 }
