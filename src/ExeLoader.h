@@ -6,6 +6,8 @@
 #include "IParaEngineCore.h"
 #include "IParaEngineApp.h"
 
+#include <boost/process.hpp>
+
 using namespace ParaEngine;
 
 class ExeLoader {
@@ -24,6 +26,7 @@ public:
 	* - exe file stdout content
 	*/
 	const std::string Execute(const std::string& exe_path, const std::string& input, int* runtime_error, int* exit_code);
+	const std::string ExecuteNotWin(const std::string& exe_path, const std::string& input, int* runtime_error, int* exit_code);
 
 private:
 };

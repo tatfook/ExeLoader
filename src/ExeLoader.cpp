@@ -84,7 +84,8 @@ const std::string ExeLoader::Execute(const std::string& exe_path, const std::str
 		NULL,         // process security attributes
 		NULL,         // primary thread security attributes
 		TRUE,         // handles are inherited
-		0,            // creation flags
+//		0,            // creation flags
+		CREATE_NO_WINDOW, // no window flag
 		NULL,         // use parent's environment
 		NULL,         // use parent's current directory
 		&siStartInfo, // STARTUPINFO pointer
@@ -151,5 +152,30 @@ const std::string ExeLoader::Execute(const std::string& exe_path, const std::str
 	CloseHandle(piProcInfo.hThread);
 
 	*exit_code = (int)dwExitCode;
+	return output;
+}
+
+const std::string ExeLoader::ExecuteNotWin(const std::string& exe_path, const std::string& input, int* runtime_error, int* exit_code)
+{
+	namespace bp = boost::process;
+
+	bp::ipstream out;
+	bp::opstream in;
+
+	bp::child c(exe_path.c_str(), bp::std_in < in, bp::std_out > out);
+	in.write(input.c_str(), input.length());
+	in.flush();
+	in.pipe().close();
+
+	std::string line;
+	std::string output;
+	while (std::getline(out, line))
+		output = output + line;
+
+	c.wait();
+
+	*runtime_error = 0;
+	*exit_code = c.exit_code();
+
 	return output;
 }

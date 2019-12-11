@@ -1,16 +1,13 @@
 # Author: DreamAndDead
 # Date: 2019.10.18
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.12)
 project (ExeLoader)
 
-set (BoostRoot_DIR "$ENV{BOOST_ROOT}")
 set(NPLRuntime_DIR "../NPLRuntime" CACHE STRING "")
 set (NPLRuntime_Absolutely_DIR "${PROJECT_SOURCE_DIR}/${NPLRuntime_DIR}")
 
 set( OUTPUT_BIN_DIR "${PROJECT_SOURCE_DIR}/target/" )
-
-
 
 
 SET(ExeLoader_Source_files "")
@@ -30,7 +27,26 @@ include_directories("${NPLRuntime_Absolutely_DIR}/Client/trunk/ParaEngineClient/
 include_directories("${NPLRuntime_Absolutely_DIR}/Client/trunk/ParaEngineClient/util")
 include_directories("${NPLRuntime_Absolutely_DIR}/Client/trunk/ParaEngineClient/IO")
 
-include_directories("${BoostRoot_DIR}")
+
+
+set(Boost_DEBUG ON)
+
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME ON)
+
+find_package(BOOST 1.69 REQUIRED)
+
+message(${Boost_FOUND} "-" ${Boost_LIBRARY_DIRS} "-" ${Boost_LIBRARIES})
+
+include_directories("${Boost_INCLUDE_DIRS}")
+
+
+
+add_library(${PROJECT_NAME} SHARED ${ExeLoader_Source_files})
+
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+
 
 
 IF(MSVC)
@@ -53,13 +69,7 @@ IF(MSVC)
 ENDIF()
 
 
-
 SET(CMAKE_DEBUG_POSTFIX "_d")
-
- 
-
-add_library(ExeLoader SHARED ${ExeLoader_Source_files})
-
 
 ADD_CUSTOM_COMMAND(
    TARGET ExeLoader
