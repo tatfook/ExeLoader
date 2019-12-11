@@ -35,12 +35,9 @@ set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 
-find_package(BOOST 1.69 REQUIRED)
-
-message(${Boost_FOUND} "-" ${Boost_LIBRARY_DIRS} "-" ${Boost_LIBRARIES})
+find_package(Boost 1.69.0 REQUIRED COMPONENTS filesystem)
 
 include_directories("${Boost_INCLUDE_DIRS}")
-
 
 
 add_library(${PROJECT_NAME} SHARED ${ExeLoader_Source_files})
