@@ -7,6 +7,7 @@
 #include "IParaEngineApp.h"
 
 #include <boost/process.hpp>
+#include <boost/process/windows.hpp>
 
 using namespace ParaEngine;
 
@@ -26,7 +27,6 @@ public:
 	* - exe file stdout content
 	*/
 	const std::string Execute(const std::string& exe_path, const std::string& input, int* runtime_error, int* exit_code);
-	const std::string ExecuteNotWin(const std::string& exe_path, const std::string& input, int* runtime_error, int* exit_code);
 
 private:
 };
